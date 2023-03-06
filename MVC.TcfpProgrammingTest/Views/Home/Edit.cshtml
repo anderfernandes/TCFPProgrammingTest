@@ -1,0 +1,55 @@
+﻿@{
+    var departments = ViewData["Departments"] as List<Department>;
+    var report = ViewData["Report"] as IncidentReport;
+}
+
+<h1>Edit Report #@report?.Id</h1>
+
+<form method="post" asp-controller="Home" asp-action="Store">
+    <div class="mb-3">
+        <label for="Status" class="form-label">Status</label>
+        <select class="form-select">
+            <option disabled>Select one</option>
+            <option selected="@(report?.Status == IncidentReportStatus.Open)">Open</option>
+            <option selected="@(report?.Status == IncidentReportStatus.Pending)">Pending</option>
+            <option selected="@(report?.Status == IncidentReportStatus.Closed)">Closed</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="DepartmentId" class="form-label">Department *</label>
+        <select class="form-select" name="DepartmentId" required asp>
+            <option disabled>Select one</option>
+            @foreach (var department in departments)
+            {
+                <option selected="@(department.Id == report?.DepartmentId)" value="@department.Id">@department.Name</option>
+            }              
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="Type" class="form-label">Type *</label>
+        <select class="form-select" aria-label="Default select example" name="Type" required>
+            <option disabled selected>Select one</option>
+            <option selected="@(report?.Type == IncidentReportType.Accident)" value="@IncidentReportType.Accident">Accident</option>
+            <option selected="@(report?.Type == IncidentReportType.Training)" value="@IncidentReportType.Training">Training</option>
+            <option selected="@(report?.Type == IncidentReportType.Other)" value="@IncidentReportType.Other">Other</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name *</label>
+        <input type="text" class="form-control" name="name" value="@report?.Name" placeholder="Name" />
+    </div>
+    <div class="mb-3">
+        <label for="Description" class="form-label">Description *</label>
+        <textarea name="description" class="form-control" placeholder="Description">@report?.Description</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="Location" class="form-label">Location *</label>
+        <input type="text" class="form-control" name="Location" placeholder="Location" value="@report?.Location" />
+    </div>
+    <div class="mb-3">
+        <label for="DateOfIncident" class="form-label">Date of Incident *</label>
+        <input type="datetime-local" class="form-control" name="DateOfIncident" value="@report?.DateOfIncident.ToString("s")" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-secondary">Reset</button>
+</form>

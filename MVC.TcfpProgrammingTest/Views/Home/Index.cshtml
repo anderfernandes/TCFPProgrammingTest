@@ -1,0 +1,25 @@
+﻿@model List<IncidentReport>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>Home</h1>
+
+<a href="/create" class="btn btn-primary">New Report</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Department</th>
+            <th>Status</th>
+            <th>Type</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Loop through all reports. Don't forget to have buttons for view, edit and delete for each. -->
+    </tbody>
+</table>
+

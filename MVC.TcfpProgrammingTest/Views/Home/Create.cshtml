@@ -1,0 +1,48 @@
+﻿@model List<Department>
+@{
+}
+
+<h1>New Incident Report</h1>
+<hr />
+
+<form method="post" asp-controller="Home" asp-action="Store">
+    <div class="mb-3">
+        <label for="DepartmentId" class="form-label">Department *</label>
+        <select class="form-select" aria-label="Department" name="DepartmentId" required>
+            <option selected>Select one</option>
+            @if (Model?.Count > 0)
+                @foreach (var department in Model)
+                {
+                    <option value="@department.Id">@department.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="Type" class="form-label">Type *</label>
+        <select class="form-select" aria-label="Default select example" name="Type" required>
+            <option selected>Select one</option>
+            <option value="@IncidentReportType.Accident">Accident</option>
+            <option value="@IncidentReportType.Training">Training</option>
+            <option value="@IncidentReportType.Other">Other</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name *</label>
+        <input type="text" class="form-control" name="name" placeholder="Name" />
+    </div>
+    <div class="mb-3">
+        <label for="Description" class="form-label">Description *</label>
+        <textarea name="description" class="form-control" placeholder="Description"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="Location" class="form-label">Location *</label>
+        <input type="text" class="form-control" name="Location" placeholder="Location" />
+    </div>
+    <div class="mb-3">
+        <label for="DateOfIncident" class="form-label">Date of Incident *</label>
+        <input type="datetime-local" class="form-control" name="DateOfIncident" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-secondary">Reset</button>
+</form>

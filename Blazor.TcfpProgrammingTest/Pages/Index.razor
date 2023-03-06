@@ -1,0 +1,214 @@
+﻿@implements IDisposable
+@inject StateContainer StateContainer
+@inject IJSRuntime JS
+@using Microsoft.AspNetCore.Components.Forms
+@page "/"
+
+<PageTitle>Incident Reports</PageTitle>
+
+<h1>Home</h1>
+
+<button @onclick="OnNewClick" class="btn btn-primary">New Report</button>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Department</th>
+            <th>Status</th>
+            <th>Type</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- TODO: Loop through reports and print them. -->
+    </tbody>
+</table>
+
+@if (show)
+{
+    <div id="backdrop">
+        <div class="modal position-static d-block" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        @if (mode == ReportPageMode.View)
+                        {
+                            <h5 class="modal-title">Report #@selected.Id <span class="badge bg-secondary">@selected.Status.ToString()</span></h5>
+                        } else if (mode == ReportPageMode.Edit)
+                        {
+                            <h5 class="modal-title">Edit Report #@report.Id</h5>
+                        } else
+                        {
+                            <h5 class="modal-title">Create Report</h5>
+                        }
+                        <button type="button" @onclick="ToggleModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        @if (mode == ReportPageMode.View)
+                        {             
+                            <h3 class="text-muted">@selected.Department?.Name</h3>
+
+                            <h4 class="text-muted">@selected.CreatedAt.ToLongDateString() @selected.CreatedAt.ToShortTimeString()</h4>
+
+                            <hr />
+
+                            <h6 class="text-muted">Type</h6>
+                            <h5>@selected.Type.ToString()</h5>
+                            <br />
+
+                            <h6 class="text-muted">Name</h6>
+                            <h5>@selected.Name</h5>
+                            <br />
+
+                            <h6 class="text-muted">Description</h6>
+                            <h5>@selected.Description</h5>
+                            <br />
+
+                            <h6 class="text-muted">Location</h6>
+                            <h5>@selected.Location</h5>
+                            <br />
+
+                            <h6 class="text-muted">Date of Incident</h6>
+                            <h5>@selected.DateOfIncident.ToLongDateString() @selected.DateOfIncident.ToShortTimeString()</h5>
+                        } else {
+                        <EditForm Model="@report" OnSubmit="OnSubmit">
+                                @if (mode == ReportPageMode.Edit)
+                                {
+                                <div class="mb-3">
+                                    <label for="Type" class="form-label">Status *</label>
+                                    <InputSelect @bind-Value="report.Status" class="form-select">
+                                        <option selected disabled>Select one</option>
+                                        <option value="@IncidentReportStatus.Open">Open</option>
+                                        <option value="@IncidentReportStatus.Pending">Pending</option>
+                                        <option value="@IncidentReportStatus.Closed">Closed</option>
+                                    </InputSelect>
+                                </div>
+                                }
+                                <div class="mb-3">
+                                <label for="DepartmentId" class="form-label">Department *</label>
+                                <InputSelect @bind-Value="report.DepartmentId" class="form-select">
+                                    <option selected disabled>Select one</option>
+                                    <!-- TODO: Loop through departments to print them as option in the select element. -->
+                                </InputSelect>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Type" class="form-label">Type *</label>
+                                <InputSelect @bind-Value="report.Type" class="form-select">
+                                    <option selected disabled>Select one</option>
+                                    <option value="@IncidentReportType.Training">Training</option>
+                                    <option value="@IncidentReportType.Accident">Accident</option>
+                                    <option value="@IncidentReportType.Other">Other</option>
+                                </InputSelect>
+                            </div>
+                            <div class="mb-3">
+                                <label for="Name" class="form-label">Name *</label>
+                                <InputText @bind-Value="report.Name" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="Description" class="form-label">Description *</label>
+                                <InputTextArea @bind-Value="report.Description" class="form-control" />
+                                
+                            </div>
+                            <div class="mb-3">
+                                <label for="Location" class="form-label">Location *</label>
+                                <InputText @bind-Value="report.Location" class="form-control" DisplayName="Location" />
+                                
+                            </div>
+                            <div class="mb-3">
+                                <label for="DateOfIncident" class="form-label">Date of Incident *</label>
+                                <InputDate Type="InputDateType.DateTimeLocal" @bind-Value="report.DateOfIncident" class="form-control" />
+                            </div>
+                        </EditForm>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button @onclick="ToggleModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        @if (mode != ReportPageMode.View)
+                        {
+                            <button type="submit" @onclick="OnSubmit" class="btn btn-primary">Save</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    bool show = false;
+
+    // Toggle the Modal
+    void ToggleModal() => show = show;
+
+    IncidentReport report = new IncidentReport();
+
+    ReportPageMode mode = ReportPageMode.Create;
+
+    IncidentReport selected = new IncidentReport();
+
+    // TODO: Add or Update Report
+    void OnSubmit()
+    {
+        if (mode == ReportPageMode.Create)
+        {
+            // TODO: Add report
+            // ...
+        }
+        else
+        {
+            //TODO: Update report
+            // ...
+        }
+
+        // TODO: Toggle modal, reset report, reset page mode.
+        // ...
+    }
+
+    // TODO: Set clicked report as selected
+    void OnReportClick(IncidentReport r)
+    {
+        // TODO: Set selected report, toggle modal.
+        // ...
+    }
+
+    // TODO: Prepare the application to receive a new report.
+    void OnNewClick()
+    {
+        // TODO: Change the mode to create, create new report, toggle modal.
+        // ...
+    }
+
+    // TODO: Prepare the application to edit a report.
+    void OnEditClick(IncidentReport r)
+    {
+        // TODO: Change mode to edit, set report to be updated, toggle modal.
+        // ...
+    }
+
+    // TODO: Delete report upon user confirmation.
+    async Task OnDeleteClick(IncidentReport r)
+    {
+        // TODO: Upon user confirmation, delete report.
+        // ...
+    }
+
+    protected override void OnInitialized()
+    {
+        StateContainer.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        StateContainer.OnChange -= StateHasChanged;
+    }
+
+    enum ReportPageMode
+    {
+        Create,
+        Edit,
+        View
+    }
+}
