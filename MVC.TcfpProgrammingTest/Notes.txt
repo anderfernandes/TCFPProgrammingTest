@@ -1,0 +1,6 @@
+ViewData: information can be found in the Edit.cshtml. This will have the specific name of the route to route the items. These varibles contains the list of the Incident Reports and Departments
+
+Model: is the varible that holds the List of Incident reports. Whenever you are calling this varible you are calling the IncidentReports list
+
+Show:This is where the popup for Viewing an previously made Tickets
+
