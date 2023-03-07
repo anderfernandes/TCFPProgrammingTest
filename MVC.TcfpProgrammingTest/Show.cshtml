@@ -1,0 +1,47 @@
+﻿@model IncidentReport
+@{
+    ViewData["Title"] = "Report Details";
+}
+
+<h2>Report #@Model.Id <span class="badge bg-secondary">@Model.Status.ToString()</span></h2>
+
+<h3 class="text-muted">@Model.Department?.Name</h3>
+
+<h4 class="text-muted">@Model.CreatedAt.ToLongDateString() @Model.CreatedAt.ToShortTimeString()</h4>
+
+<div class="d-flex gap-1">
+    <a class="btn btn-primary" href="/@Model.Id/edit">Edit</a>
+
+    <form asp-controller="Home" asp-action="Delete">
+        <input type="hidden" name="id" value="@Model.Id" />
+        <button class="btn btn-danger" id="delete" href="/@Model.Id/delete">Delete</button>
+    </form>
+</div>
+
+<hr />
+
+<h6 class="text-muted">Type</h6>
+<h5>@Model.Type.ToString()</h5>
+<br />
+
+<h6 class="text-muted">Name</h6>
+<h5>@Model.Name</h5>
+<br />
+
+<h6 class="text-muted">Description</h6>
+<h5>@Model.Description</h5>
+<br />
+
+<h6 class="text-muted">Location</h6>
+<h5>@Model.Location</h5>
+<br />
+
+<h6 class="text-muted">Date of Incident</h6>
+<h5>@Model.DateOfIncident.ToLongDateString() @Model.DateOfIncident.ToShortTimeString()</h5>
+
+<script>
+    document.querySelector("form").onsubmit = function(e) {
+        if (!confirm("Are you sure you want to delete this report?"))
+            e.preventDefault()
+    }
+</script>

@@ -1,0 +1,39 @@
+﻿@model List<IncidentReport>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>Home</h1>
+
+<a href="/create" class="btn btn-primary">New Report</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Department</th>
+            <th>Status</th>
+            <th>Type</th>
+            <th>Created At</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <!--This loops through each New Instance of Incident Report and names those Instances as report-->
+        @foreach (var report in Model)
+        {
+            <tr>
+                <td>@report.Id</td>
+                <td>@report.Name</td>
+                <td>@report.DateOfIncident.ToShortDateString()</td>
+                <td>@report.Status</td>
+                <td>
+                    <!--This allows you to view current Incident through the id since it is a common factor whithin all the reports-->
+                    <a href="/@report.Id">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
