@@ -119,24 +119,28 @@ namespace MVC.TcfpProgrammingTest.Controllers
             int maxId = reports.Count > 0 ? reports.Max(r => r.Id) : 0;
         
             // Create a new IncidentReport object with the specified parameters
-            IncidentReport newReport = new IncidentReport
+            try
             {
-                Id = maxId + 1,
-                DepartmentId = DepartmentId,
-                Type = Type,
-                Name = Name,
-                Description = Description,
-                Location = Location,
-                DateOfIncident = DateTime.Parse(DateOfIncident),
-                CreatedAt = DateTime.Now,
-                Status = IncidentReportStatus.Pending
-            };
-        
-            // Add the new IncidentReport object to the reports list
-            reports.Add(newReport);
-        
-            // Redirects to the Show.cshtml of the new IncidentReport object
-            return RedirectToAction("Show", new { id = newReport.Id });
+                IncidentReport newReport = new IncidentReport
+                {
+                    Id = maxId + 1,
+                    DepartmentId = DepartmentId,
+                    Type = Type,
+                    Name = Name,
+                    Description = Description,
+                    Location = Location,
+                    DateOfIncident = DateTime.Parse(DateOfIncident),
+                    CreatedAt = DateTime.Now,
+                    Status = IncidentReportStatus.Pending
+                };
+
+                // Add the new IncidentReport object to the reports list
+                reports.Add(newReport);
+                return RedirectToAction("Show", new { id = newReport.Id });
+            }
+            catch (Exception Error) {
+                return Redirect("Index");
+            }
         }
 
         private IActionResult Redirect(string v, object value)
