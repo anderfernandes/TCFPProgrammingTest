@@ -19,7 +19,36 @@
         </tr>
     </thead>
     <tbody>
-        <!-- Loop through all reports. Don't forget to have buttons for view, edit and delete for each. -->
+        @* Loop through all reports. Added View, Edit, and Delete buttons for each column. *@
+       @foreach(var report in Model)
+        {
+            <tr>
+                <td> @report.Id </td>
+                <td> @report.Department?.Name </td>
+                <td> @report.Status </td>
+                <td> @report.Type </td>
+                <td > @report.CreatedAt </td>
+                <td>
+                    <div class="d-flex gap-1">
+                        <a class="btn btn-secondary" href="/@report.Id">View</a>
+                        <a class="btn btn-primary" href="/@report.Id/edit">Edit</a>
+                        <form asp-controller="Home" asp-action="Delete">
+                            <input type="hidden" name="id" value="@report.Id" />
+                            <button class="btn btn-danger" id="delete" href="/@report.Id/delete">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<script>
+    const forms = document.querySelectorAll("form");
+    forms.forEach((form) => {
+        form.onsubmit = function(e) {
+            if (!confirm("Are you sure you want to delete this report?"))
+                e.preventDefault();
+        };
+    });
+</script>
 

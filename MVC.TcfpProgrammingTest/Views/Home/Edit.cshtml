@@ -6,13 +6,17 @@
 <h1>Edit Report #@report?.Id</h1>
 
 <form method="post" asp-controller="Home" asp-action="Store">
+    @* Changes: Added this line of code to get the report ID and store it to the reportID. *@
+    <input type="hidden" name="reportId" value="@report?.Id">
     <div class="mb-3">
         <label for="Status" class="form-label">Status</label>
-        <select class="form-select">
+        @* Changes: Added name = reportStatus to pass the selected status to controller. *@
+        <select class="form-select" name="reportStatus">
             <option disabled>Select one</option>
-            <option selected="@(report?.Status == IncidentReportStatus.Open)">Open</option>
-            <option selected="@(report?.Status == IncidentReportStatus.Pending)">Pending</option>
-            <option selected="@(report?.Status == IncidentReportStatus.Closed)">Closed</option>
+            @* Changes: Cast the assigned value to int. *@
+            <option selected="@(report?.Status == IncidentReportStatus.Open)" value="@((int)IncidentReportStatus.Open)">Open</option>
+            <option selected="@(report?.Status == IncidentReportStatus.Pending)" value="@((int)IncidentReportStatus.Pending)">Pending</option>
+            <option selected="@(report?.Status == IncidentReportStatus.Closed)" value="@((int)IncidentReportStatus.Closed)">Closed</option>
         </select>
     </div>
     <div class="mb-3">
